@@ -25,6 +25,7 @@ global.CALLBACKS = [];
 for (var i = 0; i < global.TASKS.length; i++) {
     global.CALLBACKS[i] = [];
 }
+global.APPROVED_IPS = ['::ffff:127.0.0.1']
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

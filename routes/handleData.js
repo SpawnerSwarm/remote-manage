@@ -4,11 +4,13 @@ var url = require('url');
 var router = express.Router();
 
 router.post('/:task', function (req, res, next) {
-    if (req.body == {} || !global.TASKS.includes(req.params.task)) {
+    if (req.body.message == undefined || !global.TASKS.includes(req.params.task)) {
+        console.log(`Refused connection from ${req.ip} because the request did not contain any data`)
         res.sendStatus(400);
     } else {
         console.log(req.ip);
-        if (req.ip != '::ffff:127.0.0.1') {
+        if (!global.APPROVED_IPS.includes(req.ip)) {
+            console.log(`Refused connection from ${req.ip} because it was not on the approved IPs list`);
             res.sendStatus(403);
         } else {
             let line = req.body;
