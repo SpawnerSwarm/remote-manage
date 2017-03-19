@@ -4,7 +4,6 @@
         "node": true,
         "browser": true
     },
-    "extends": "eslint:recommended",
     "parserOptions": {
         "sourceType": "module"
     },
@@ -28,6 +27,7 @@
         "no-regex-spaces": "warn",
         "no-unreachable": "error",
         "no-unexpected-multiline": "error",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-console": "off"
     }
 }
