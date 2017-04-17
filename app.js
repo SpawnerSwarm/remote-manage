@@ -1,35 +1,16 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const port = 3000;
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var handleData = require('./routes/handleData');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.set('view engine', 'jade');
 
-//tasks
-global.TASKS = ['swarmbot']
-global.TASK_CONSOLE = [];
-for (var i = 0; i < global.TASKS.length; i++) {
-    global.TASK_CONSOLE[i] = [];
-}
-global.IS_SHORTENING = [];
-global.CALLBACKS = [];
-for (var i = 0; i < global.TASKS.length; i++) {
-    global.CALLBACKS[i] = [];
-}
-global.APPROVED_IPS = ['::ffff:127.0.0.1']
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -41,16 +22,64 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/console', handleData);
+global.TASK_CONSOLE = [[]];
+global.TASKS = ['swarmbot'];
+global.NAMESPACES = [];
+global.APPROVED_IPS = process.env.APPROVED_IPS;
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+for(var i = 0; i < global.TASKS.length; i++) {
+    global.NAMESPACES.push(io.of(`/${global.TASKS[i]}`));
+}
+
+for(var i = 0; i < global.NAMESPACES.length; i++) {
+    let nsp = global.NAMESPACES[i];
+    nsp.on('connection', function(socket) {
+        if(global.APPROVED_IPS.includes(socket.handshake.address)) {
+            console.log(`User connected to ${nsp.name} from ${socket.handshake.address}`);
+            socket.on('join', function(data) {
+                console.log(`User requested to join room ${data}`);
+                socket.join(data);
+                socket.emit('console', global.TASK_CONSOLE[0]);
+            });
+        } else {
+            console.log(`Connection refused to namespace ${nsp.name}. Reason: ${socket.handshake.address} is not an approved IP address for this namespace`);
+            socket.disconnect();
+        }
+    });
+}
+
+app.get('/', function (req, res) {
+    //res.sendFile(__dirname + '/index.html');
+    res.render('index');
 });
+
+app.post('/console/:task', function(req, res) {
+    if(req.params.task === 'swarmbot') {
+        console.log(req.ip);
+        let index = 0;
+        appendMessage(req.body, index);
+    }
+    res.sendStatus(200);
+});
+
+app.get('/console/:task', function(req, res) {
+    if(req.params.task === 'swarmbot') {
+        res.send(global.TASK_CONSOLE[global.TASKS.indexOf(req.params.task)]);
+    }
+    else {
+        res.sendStatus(400);
+    }
+});
+
+function appendMessage(json, task) {
+    global.TASK_CONSOLE[task].push(json);
+
+    while (global.TASK_CONSOLE[task].length > 200) {
+        global.TASK_CONSOLE[task].shift();
+    }
+
+    io.of('/swarmbot').in('console').emit('log', [json]);
+}
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -63,4 +92,7 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-module.exports = app;
+
+http.listen(port, function () {
+    console.log('listening on *:3000');
+});

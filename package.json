@@ -1,5 +1,5 @@
 {
-  "name": "neural-sentry",
+  "name": "remote-manage",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,7 +16,6 @@
     "node-sass-middleware": "latest"
   },
   "devDependencies": {
-    "@types/node": "^7.0.8",
     "eslint": "latest",
     "pug-lint": "latest",
     "pug-lint-config-clock": "latest",
