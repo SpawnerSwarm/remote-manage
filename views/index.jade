@@ -1,0 +1,19 @@
+doctype html
+extends layout
+
+link(href='https://fonts.googleapis.com/css?family=Raleway:400500,700,800', rel='stylesheet')
+
+block content
+  nav.top-nav.noselect
+    a.title(href='/')
+      img.site-main-icon(src='/images/Void_Key.png', alt='')
+      l
+        span.site-main-title Remote
+        span Manage
+      span.site-sub-title ALPHA
+
+    a.tab.nav-select-task(href='/', task='example') BotExample
+  
+  .content
+  script(src='/socket.io/socket.io.js')
+  script(src='/scripts/index.js')

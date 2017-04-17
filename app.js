@@ -1,17 +1,31 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = 3000;
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.set('view engine', 'jade');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(require('node-sass-middleware')({
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    indentedSyntax: true,
+    sourceMap: true
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 global.TASK_CONSOLE = [[]];
 global.TASKS = ['swarmbot'];
 global.NAMESPACES = [];
-global.APPROVED_IPS = ['::1'];
+global.APPROVED_IPS = process.env.APPROVED_IPS;
 
 for(var i = 0; i < global.TASKS.length; i++) {
     global.NAMESPACES.push(io.of(`/${global.TASKS[i]}`));
@@ -35,7 +49,8 @@ for(var i = 0; i < global.NAMESPACES.length; i++) {
 }
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    //res.sendFile(__dirname + '/index.html');
+    res.render('index');
 });
 
 app.post('/console/:task', function(req, res) {
@@ -44,7 +59,6 @@ app.post('/console/:task', function(req, res) {
         let index = 0;
         appendMessage(req.body, index);
     }
-    console.log(req.body.message);
     res.sendStatus(200);
 });
 
@@ -67,10 +81,18 @@ function appendMessage(json, task) {
     io.of('/swarmbot').in('console').emit('log', [json]);
 }
 
-app.get('/swarmbot/console', function(req, res) {
-    res.send(global.TASK_CONSOLE[0]);
+// error handler
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
-http.listen(3000, function () {
+
+http.listen(port, function () {
     console.log('listening on *:3000');
 });
