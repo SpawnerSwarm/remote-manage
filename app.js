@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const port = 3000;
+const port = 80;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -50,7 +50,7 @@ for(var i = 0; i < global.NAMESPACES.length; i++) {
 
 app.get('/', function (req, res) {
     //res.sendFile(__dirname + '/index.html');
-    res.render('index');
+    res.render('index', {title: 'Remote Manage', tasks: ['TaskExample']});
 });
 
 app.post('/console/:task', function(req, res) {
@@ -94,5 +94,5 @@ app.use(function (err, req, res, next) {
 
 
 http.listen(port, function () {
-    console.log('listening on *:3000');
+    console.log(`listening on *:${port}`);
 });
