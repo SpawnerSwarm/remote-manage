@@ -6,13 +6,14 @@ link(href='https://fonts.googleapis.com/css?family=Raleway:400500,700,800', rel=
 block content
   nav.top-nav.noselect
     a.title(href='/')
-      img.site-main-icon(src='/images/Void_Key.png', alt='')
+      img.site-main-icon(src='/images/ICON.png', alt='')
       l
         span.site-main-title Remote
         span Manage
       span.site-sub-title ALPHA
 
-    a.tab.nav-select-task(href='/', task='example') BotExample
+    each task in tasks
+      a.tab.nav-select-task(href='/', task='example')= task
   
   .content
   script(src='/socket.io/socket.io.js')
