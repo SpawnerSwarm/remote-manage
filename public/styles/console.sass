@@ -1,0 +1,41 @@
+@import 'vars'
+
+.console
+    margin: 5px 0 0 5px
+
+.console-line
+    display: block
+    word-wrap: break-word
+
+.console-line-level
+    font-family: monospace
+
+    &::before,
+    &::after
+        font-family: CURSIVE
+        font-weight: bold
+
+    &::before
+        content: '<'
+
+    &::after
+        content: '>'
+
+.console-error
+    background-color: $error-fade-font-color
+
+.console-error-level
+    color: $error-font-color
+    font-weight: bold
+
+    &::before,
+    &::after
+        color: $main-font-color
+
+.console-info-level
+    color: $success-font-color
+    font-weight: bold
+
+    &::before,
+    &::after
+        color: $main-font-color
