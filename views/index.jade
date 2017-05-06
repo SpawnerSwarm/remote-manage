@@ -15,6 +15,8 @@ block content
     each task in tasks
       a.tab.nav-select-task(href='/', task='example')= task
   
+  span.filterbox Filter Errors: 
+    input(type='checkbox', name='filterErrors')
   .console
   script(src='/socket.io/socket.io.js')
   script(src='/scripts/index.js')

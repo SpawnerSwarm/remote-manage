@@ -1,7 +1,17 @@
 @import 'vars'
 
+.filterbox
+    padding-top: 5px
+    position: absolute
+    right: 5px
+
 .console
     margin: 5px 0 0 5px
+
+    &.filter-errors
+        .console-info,
+        .console-debug
+            display: none
 
 .console-line
     display: block
@@ -12,6 +22,7 @@
 
     &::before,
     &::after
+        color: $main-font-color
         font-family: CURSIVE
         font-weight: bold
 
@@ -24,18 +35,11 @@
 .console-error
     background-color: $error-fade-font-color
 
-.console-error-level
+.console-error-level,
+.console-warning-level
     color: $error-font-color
     font-weight: bold
-
-    &::before,
-    &::after
-        color: $main-font-color
 
 .console-info-level
     color: $success-font-color
     font-weight: bold
-
-    &::before,
-    &::after
-        color: $main-font-color

@@ -35,3 +35,12 @@ function removeChildren(len) {
         con.removeChild(con.children[0]);
     }
 }
+document.querySelector('.filterbox').addEventListener('click', (e) => {
+    let con = document.querySelector('.console');
+    if(e.target.checked) {
+        con.className = con.className.replace('console', 'console filter-errors');
+    }
+    else {
+        con.className = con.className.replace('console filter-errors', 'console');
+    }
+});
