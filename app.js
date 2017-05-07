@@ -7,7 +7,9 @@ const port = 80;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const fs = require('fs');
+
+app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.set('view engine', 'jade');
 
@@ -22,64 +24,25 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-global.TASK_CONSOLE = [[]];
-global.TASKS = ['swarmbot'];
-global.NAMESPACES = [];
-global.APPROVED_IPS = process.env.APPROVED_IPS;
+const taskDir = path.join(__dirname, 'tasks');
+let taskDirs = fs.readdirSync(taskDir);
+let taskScripts = [];
+global.tasks = [];
 
-for(var i = 0; i < global.TASKS.length; i++) {
-    global.NAMESPACES.push(io.of(`/${global.TASKS[i]}`));
+for(let i = 0; i < taskDirs.length; i++) {
+    if(fs.readdirSync(path.join(taskDir, taskDirs[i])).includes('task.js')) {
+        taskScripts.push(path.join(taskDir, taskDirs[i], 'task.js'));
+    }
 }
 
-for(var i = 0; i < global.NAMESPACES.length; i++) {
-    let nsp = global.NAMESPACES[i];
-    nsp.on('connection', function(socket) {
-        if(global.APPROVED_IPS.includes(socket.handshake.address)) {
-            console.log(`User connected to ${nsp.name} from ${socket.handshake.address}`);
-            socket.on('join', function(data) {
-                console.log(`User requested to join room ${data}`);
-                socket.join(data);
-                socket.emit('console', global.TASK_CONSOLE[0]);
-            });
-        } else {
-            console.log(`Connection refused to namespace ${nsp.name}. Reason: ${socket.handshake.address} is not an approved IP address for this namespace`);
-            socket.disconnect();
-        }
-    });
+for(i = 0; i < taskScripts.length; i++) {
+    let task = require(taskScripts[i]);
+    global.tasks.push((new task()).init(io, app));
 }
 
 app.get('/', function (req, res) {
-    //res.sendFile(__dirname + '/index.html');
-    res.render('index', {title: 'Remote Manage', tasks: ['TaskExample']});
+    res.render('index', {tasks: global.tasks});
 });
-
-app.post('/console/:task', function(req, res) {
-    if(req.params.task === 'swarmbot') {
-        console.log(req.ip);
-        let index = 0;
-        appendMessage(req.body, index);
-    }
-    res.sendStatus(200);
-});
-
-app.get('/console/:task', function(req, res) {
-    if(req.params.task === 'swarmbot') {
-        res.send(global.TASK_CONSOLE[global.TASKS.indexOf(req.params.task)]);
-    }
-    else {
-        res.sendStatus(400);
-    }
-});
-
-function appendMessage(json, task) {
-    global.TASK_CONSOLE[task].push(json);
-
-    while (global.TASK_CONSOLE[task].length > 200) {
-        global.TASK_CONSOLE[task].shift();
-    }
-
-    io.of('/swarmbot').in('console').emit('log', [json]);
-}
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -89,7 +52,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error', {tasks: global.tasks});
 });
 
 

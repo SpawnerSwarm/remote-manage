@@ -1,6 +1,7 @@
 remote-manage.json
 *.css
 *.css.map
+ICON.png
 
 # Logs
 logs
