@@ -1,4 +1,4 @@
-var socket = io('/exampleTask');
+var socket = io('/swarmbot');
 socket.emit('join', 'console');
 socket.on('console', function (data) {
     removeChildren(0);

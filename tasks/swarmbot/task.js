@@ -4,7 +4,7 @@ const Console = require('./modules/console.js');
 
 class ExampleTask extends Task {
     constructor() {
-        super('Example Task', 'exampleTask');
+        super('SwarmBot', 'swarmbot');
         this.bindServiceModule(Console);
     }
 }
