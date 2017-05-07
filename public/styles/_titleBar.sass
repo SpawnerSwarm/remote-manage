@@ -1,6 +1,7 @@
 @import 'vars'
 
 $shadow:    0 0 5px 0 $black
+$task-shadow: 0 2px 3px 0 $black
 
 a
     display: inline-block
@@ -34,13 +35,50 @@ a
     height: 75px
     line-height: 75px
     width: 100%
-    z-index: 5
+    z-index: 1
 
 .tab
     padding: 0 20px
+    position: absolute
 
     &:hover
         background: $white-highlight
 
     &.selected
-        @extend .tab:hover
+        background: $main-font-color
+        color: $white
+
+//Task bar
+
+.task-bar
+    background: $main-font-color
+    box-shadow: $task-shadow
+    color: $white
+    height: 35px
+    line-height: 35px
+    padding-left: 10px
+
+    & .task-bar-nav:not(:first-child)::before
+        content: '>'
+        font-family: CURSIVE
+        margin: 0 10px
+
+//Side bar
+
+.side-bar
+    background: $white-highlight
+    height: 100%
+    line-height: 30px
+    position: fixed
+    width: 300px
+
+.side-bar-nav
+    display: block
+    padding: 30px 0 30px 10px
+
+    &:first-child
+        margin-top: 5px
+        padding: 25px 0 30px 10px
+
+    &:hover
+        background-color: $white

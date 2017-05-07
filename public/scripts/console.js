@@ -1,4 +1,4 @@
-var socket = io('/swarmbot');
+var socket = io('/exampleTask');
 socket.emit('join', 'console');
 socket.on('console', function (data) {
     removeChildren(0);
@@ -35,7 +35,7 @@ function removeChildren(len) {
         con.removeChild(con.children[0]);
     }
 }
-document.querySelector('.filterbox').addEventListener('click', (e) => {
+/*document.querySelector('.filterbox').addEventListener('click', (e) => {
     let con = document.querySelector('.console');
     if(e.target.checked) {
         con.className = con.className.replace('console', 'console filter-errors');
@@ -43,4 +43,4 @@ document.querySelector('.filterbox').addEventListener('click', (e) => {
     else {
         con.className = con.className.replace('console filter-errors', 'console');
     }
-});
+});*/

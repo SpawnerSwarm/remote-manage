@@ -1,9 +1,43 @@
+
 doctype html
 html
   head
-    title= title
+    if task
+      if module
+        title= `${task.displayName} | ${module.displayName}`
+      else
+        title= `${task.displayName}`
+    else
+      title RemoteManage
     link(rel='stylesheet', href='/styles/global.css')
-    link(rel='stylesheet', href='/styles/console.css')
     script(src='https://code.jquery.com/jquery-3.1.1.min.js')
+    link(href='https://fonts.googleapis.com/css?family=Raleway:400500,700,800', rel='stylesheet')
+    script(src='/socket.io/socket.io.js')
   body
-    block content
+    nav.top-nav.noselect
+      a.title(href='/')
+        img.site-main-icon(src='/images/ICON.png', alt='')
+        l
+          span.site-main-title Remote
+          span Manage
+        span.site-sub-title ALPHA
+
+      each taskl in tasks
+        if task && task.namespace === taskl.namespace
+          a.tab.nav-select-task.selected(href=`/${task.namespace}`, task=this.task)= taskl.displayName
+        else
+          a.tab.nav-select-task(href=`/${taskl.namespace}`, task=taskl.namespace)= taskl.displayName
+    
+    if task
+      nav.task-bar
+        span.task.task-bar-nav= task.displayName
+        if module
+          span.module.task-bar-nav= module.displayName
+      nav.side-bar
+        - var map = task.modules.services.values()
+        - for (var i = 0; i < task.modules.services.size; i++) {
+          - var modulel= map.next().value
+          a.side-bar-nav(href= '/'.concat(task.namespace, '/', modulel.roomName))= modulel.displayName
+        - }
+    .content
+      block content
