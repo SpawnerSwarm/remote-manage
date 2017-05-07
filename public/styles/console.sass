@@ -6,7 +6,16 @@
     right: 5px
 
 .console
-    margin: 5px 0 0 5px
+    $width:    1400px
+    background-color: $white-highlight-light
+    height: 700px
+    left: 50%
+    margin-left: -(($width / 2) - ($sidebar-width / 2))
+    margin-top: 50px
+    overflow: auto
+    padding: 5px
+    position: absolute
+    width: $width
 
     &.filter-errors
         .console-info,
@@ -43,3 +52,20 @@
 .console-info-level
     color: $success-font-color
     font-weight: bold
+
+.button-holder
+    margin-left: -$sidebar-width
+    text-align: center
+
+.button-row
+    bottom: 35px
+    position: absolute
+
+$button-spacing:    40px
+
+.export-button
+    &:first-child
+        margin-right: $button-spacing / 2
+
+    &:last-child
+        margin-left: $button-spacing / 2
