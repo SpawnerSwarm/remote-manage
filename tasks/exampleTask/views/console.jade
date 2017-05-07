@@ -4,5 +4,9 @@ extends ../../../views/layout
 
 block content
   .console
+  .button-holder
+    span.button-row
+      a.button.export-button.noselect(href=`/${task.namespace}/${module.roomName}/json/download`) Export to JSON
+      a.button.export-button.noselect(href=`/${task.namespace}/${module.roomName}/text/download`) Export to Text
   script(src='/scripts/console.js')
   link(rel='stylesheet', href= '/styles/console.css')
