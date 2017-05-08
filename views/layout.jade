@@ -15,7 +15,7 @@ html
     script(src='/socket.io/socket.io.js')
   body
     nav.top-nav.noselect
-      a.title(href='/')
+      a.title.clickable(href='/')
         img.site-main-icon(src='/images/ICON.png', alt='')
         l
           span.site-main-title Remote
@@ -24,9 +24,9 @@ html
 
       each taskl in tasks
         if task && task.namespace === taskl.namespace
-          a.tab.nav-select-task.selected(href=`/${task.namespace}`, task=this.task)= taskl.displayName
+          a.tab.nav-select-task.selected.clickable(href=`/${task.namespace}`, task=this.task)= taskl.displayName
         else
-          a.tab.nav-select-task(href=`/${taskl.namespace}`, task=taskl.namespace)= taskl.displayName
+          a.tab.nav-select-task.clickable(href=`/${taskl.namespace}`, task=taskl.namespace)= taskl.displayName
     
     if task
       nav.task-bar
