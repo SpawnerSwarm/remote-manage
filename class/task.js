@@ -6,8 +6,8 @@ class Task {
     constructor(displayName, namespace) {
         this.modules = {
             auth: {
-                module: function() {return new Promise((resolve) => {resolve();});},
-                authenticateConnection: function() {return new Promise((resolve) => {resolve();});}
+                module: function () { return new Promise((resolve) => { resolve(); }); },
+                authenticateConnection: function () { return new Promise((resolve) => { resolve(); }); }
             },
             database: undefined,
 
@@ -17,6 +17,8 @@ class Task {
         this.displayName = displayName;
 
         this.namespace = namespace;
+
+        this.defaultToFirst = false;
     }
 
     /**
@@ -43,34 +45,46 @@ class Task {
 
     init(io, app) {
         let map = this.modules.services.values();
-        for(let i = 0; i < this.modules.services.size; i++) {
+        for (let i = 0; i < this.modules.services.size; i++) {
             let module = map.next().value;
             module.init(io, app, this);
         }
         io.of(this.namespace).on('connection', function (socket) {
             this.modules.auth.authenticateConnection(module.roomName, socket).then((userData) => {
                 socket.on('join', (data) => {
-                    if(this.modules.services.has(data)) {
+                    if (this.modules.services.has(data)) {
                         let module = this.modules.services.get(data);
                         this.modules.auth.module(module, socket).then((userData) => {
                             console.log(`User connected to module ${module.roomName} on task ${this.namespace}`);
                             socket.join(data);
                             module.onJoin(socket, userData);
                         })
-                        .catch((err) => {
-                            socket.emit('error', 'You are not allowed to use this module!');
-                            this.emit('error', {userData: userData, errorAt: 'module', reason: err});
-                        });
+                            .catch((err) => {
+                                socket.emit('error', 'You are not allowed to use this module!');
+                                this.emit('error', { userData: userData, errorAt: 'module', reason: err });
+                            });
                     }
                 });
             }).catch((err) => {
                 socket.emit('error', 'You are not allowed to access this task!');
-                this.emit('error', {userData: userData, errorAt: 'namespace', reason: err});
+                this.emit('error', { userData: userData, errorAt: 'namespace', reason: err });
             });
         }.bind(this));
-        app.get(`/${this.namespace}`, function (req, res) {
-            res.render(path.join(__dirname.replace('class', 'tasks'), this.namespace, 'views/index.jade'), {tasks: global.tasks, task: this});
-        }.bind(this));
+
+        if (this.defaultToFirst && this.modules.services.size !== 0) {
+            app.get(`/${this.namespace}`, function (req, res) {
+                let name = this.modules.services.keys().next().value;
+                let module = this.modules.services.values().next().value;
+
+                res.render(path.join(__dirname.replace('class', 'tasks'), this.namespace, 'views', `${name}.jade`), {tasks: global.tasks, task: this, module: module});
+            }.bind(this));
+        }
+        else {
+            app.get(`/${this.namespace}`, function (req, res) {
+                res.render(path.join(__dirname.replace('class', 'tasks'), this.namespace, 'views', 'index.jade'), { tasks: global.tasks, task: this });
+            }.bind(this));
+        }
+
         return this;
     }
 }
