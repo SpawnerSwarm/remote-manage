@@ -1,7 +1,8 @@
 @import 'https://fonts.googleapis.com/css?family=Raleway:400500,700,800'
 @import 'titleBar'
 @import 'vars'
-
+@import 'button'
+@import 'menu'
 
 body
     border: 0
@@ -21,15 +22,8 @@ a
     user-select: none
 
 .content
-    margin-left: $sidebar-width
-
-.button
-    background: $main-font-color
-    box-shadow: $shadow
-    color: $white
-    cursor: pointer
-    font: inherit
-    padding: 10px 15px
-
-    &:active
-        box-shadow: inset $shadow
+    bottom: 0
+    left: $sidebar-width
+    position: absolute
+    right: 0
+    top: 110px

@@ -47,38 +47,3 @@ a
     &.selected
         background: $main-font-color
         color: $white
-
-//Task bar
-
-.task-bar
-    background: $main-font-color
-    box-shadow: $task-shadow
-    color: $white
-    height: 35px
-    line-height: 35px
-    padding-left: 10px
-
-    & .task-bar-nav:not(:first-child)::before
-        content: '>'
-        font-family: CURSIVE
-        margin: 0 10px
-
-//Side bar
-
-.side-bar
-    background: $white-highlight
-    height: 100%
-    line-height: 30px
-    position: fixed
-    width: $sidebar-width
-
-.side-bar-nav
-    display: block
-    padding: 30px 0 30px 10px
-
-    &:first-child
-        margin-top: 5px
-        padding: 25px 0 30px 10px
-
-    &:hover
-        background-color: $white
