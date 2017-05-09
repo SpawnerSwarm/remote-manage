@@ -5,3 +5,7 @@ rules:
       size: 4
   no-important:
     - 0
+  nesting-depth:
+    - 1
+    -
+      max-depth: 4
