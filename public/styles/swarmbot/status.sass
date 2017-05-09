@@ -1,0 +1,63 @@
+@import '../vars'
+
+$margin: 50px
+
+.task-display
+    display:                        inline-flex
+    left:                           $margin
+    position:                       absolute
+    right:                          $margin
+    top:                            $margin
+
+.task-title-status-buttons
+    display:                        inline-flex
+    margin-left:                    30px
+    margin-top:                     20px
+
+    .buttons
+        position:                   absolute
+        right:                      0
+        $button-spacing:            30px
+
+        .button
+            @mixin button($color)
+                background-color:   $color
+                box-shadow:         $shadow-nocolor $color
+
+                &:active
+                    box-shadow:     inset $shadow-nocolor $color
+
+            &.button-start
+
+                @include button($success-font-color)
+
+            &.button-stop
+
+                @include button($error-font-color)
+
+            &:first-child
+                margin-right:       $button-spacing
+
+            &:last-child
+                margin-left:        $button-spacing
+
+.task-title-status
+    & > span
+        display:                    block
+
+.task-title
+    font-size:                      35px
+
+.task-status
+    line-height:                    60px
+
+    &.status-online
+        background-color:           $success-font-color
+
+    &.status-offline
+        background-color:           $error-font-color
+
+.task-icon
+    $size:                          200px
+    height:                         $size
+    width:                          $size
