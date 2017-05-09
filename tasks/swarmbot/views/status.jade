@@ -1,0 +1,18 @@
+
+doctype html
+extends ../../../views/layout
+
+block content
+  .task-display
+    img.task-icon.circle.noselect.nopointer(src=`/images/${task.namespace}\/ICON.png`, alt=`${task.displayName} Icon`)
+    .task-title-status-buttons
+      .task-title-status
+        span.task-title= task.displayName
+        .task-status-holder
+          span.task-status.status-offline.badge.noselect.noshadow OFFLINE
+      span.buttons
+        a.button.noround.button-start.noselect.clickable Start
+        a.button.noround.button-restart.noselect.clickable Restart
+        a.button.noround.button-stop.noselect.clickable Stop
+  script(src=`/scripts/${task.namespace}\/status.js`)
+  link(rel='stylesheet', href= `/styles/${task.namespace}\/status.css`)

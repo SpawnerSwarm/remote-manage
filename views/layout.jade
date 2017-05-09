@@ -13,6 +13,10 @@ html
     script(src='https://code.jquery.com/jquery-3.1.1.min.js')
     link(href='https://fonts.googleapis.com/css?family=Raleway:400500,700,800', rel='stylesheet')
     script(src='/socket.io/socket.io.js')
+    if task
+      meta(name='task', content= task.namespace)
+    if module
+      meta(name='module', content= module.roomName)
   body
     nav.top-nav.noselect
       a.title.clickable(href='/')
