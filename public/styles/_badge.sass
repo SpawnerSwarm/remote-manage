@@ -1,0 +1,18 @@
+$badge-shadow:              0 0 2.5px 0 #000
+
+.badge
+    background:             $main-font-color
+    color:                  $white
+    font:                   inherit
+    padding:                5px 7.5px
+
+    &:not(.noshadow)
+        box-shadow:         $badge-shadow
+
+    &:not(.noround)
+        border-radius:      7px
+
+    &.clickable
+        &:active
+            &:not(.noshadow)
+                box-shadow: inset $badge-shadow
