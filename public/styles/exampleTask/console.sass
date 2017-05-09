@@ -1,0 +1,76 @@
+@import '../vars'
+
+.filterbox
+    padding-top:        5px
+    position:           absolute
+    right:              5px
+
+.console
+    $console-margin:    100px
+    background-color:   $white-highlight-light
+    bottom:             $console-margin
+    left:               $console-margin
+    overflow:           auto
+    padding:            5px
+    position:           absolute
+    right:              $console-margin
+    top:                $console-margin / 2
+
+    &.filter-errors
+        .console-info,
+        .console-debug
+            display:    none
+
+.console-line
+    display:            block
+    word-wrap:          break-word
+
+.console-line-level
+    font-family:        monospace
+
+    &::before,
+    &::after
+        color:          $main-font-color
+        font-family:    CURSIVE
+        font-weight:    bold
+
+    &::before
+        content:        '<'
+
+    &::after
+        content:        '>'
+
+.console-error
+    background-color:   $error-fade-font-color
+
+.console-warning
+    background-color:   $warning-fade-font-color
+
+.console-error-level,
+.console-warning-level,
+.console-info-level
+    font-weight:        bold
+
+.console-error-level,
+.console-warning-level
+    color:              $error-font-color
+
+.console-info-level
+    color:              $success-font-color
+
+.button-holder
+    margin-left:        -$sidebar-width
+    text-align:         center
+
+.button-row
+    bottom:             35px
+    position:           absolute
+
+$button-spacing:        40px
+
+.export-button
+    &:first-child
+        margin-right:   $button-spacing / 2
+
+    &:last-child
+        margin-left:    $button-spacing / 2

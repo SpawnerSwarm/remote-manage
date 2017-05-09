@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 const fs = require('fs');
 
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set('view engine', 'jade');
 
@@ -29,19 +29,23 @@ let taskDirs = fs.readdirSync(taskDir);
 let taskScripts = [];
 global.tasks = [];
 
-for(let i = 0; i < taskDirs.length; i++) {
-    if(fs.readdirSync(path.join(taskDir, taskDirs[i])).includes('task.js')) {
+for (let i = 0; i < taskDirs.length; i++) {
+    if (fs.readdirSync(path.join(taskDir, taskDirs[i])).includes('task.js')) {
         taskScripts.push(path.join(taskDir, taskDirs[i], 'task.js'));
     }
 }
 
-for(i = 0; i < taskScripts.length; i++) {
+for (i = 0; i < taskScripts.length; i++) {
     let task = require(taskScripts[i]);
     global.tasks.push((new task()).init(io, app));
 }
 
 app.get('/', function (req, res) {
-    res.render('index', {tasks: global.tasks});
+    if (global.tasks.find(x => x.namespace === process.env.DEFAULT)) {
+        res.redirect(`/${process.env.DEFAULT}`);
+    } else {
+        res.render('index', { tasks: global.tasks });
+    }
 });
 
 // error handler
@@ -52,7 +56,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error', {tasks: global.tasks});
+    res.render('error', { tasks: global.tasks });
 });
 
 

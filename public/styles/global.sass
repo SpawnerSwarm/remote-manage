@@ -3,27 +3,43 @@
 @import 'vars'
 @import 'button'
 @import 'menu'
+@import 'badge'
+
 
 body
-    border: 0
-    color: $main-font-color
-    font-family: $font-stack
-    font-size: 16px
-    font-weight: 400
-    margin: 0
-    padding: 0
+    border:             0
+    color:              $main-font-color
+    font-family:        $font-stack
+    font-size:          16px
+    font-weight:        400
+    margin:             0
+    padding:            0
 
 a
-    color: inherit
-    text-decoration: none
+    color:              inherit
+    text-decoration:    none
 
+//sass-lint:disable force-element-nesting
 .noselect,
 .noselect *
-    user-select: none
+    cursor:             default
+    user-select:        none
+
+.clickable,
+.clickable *
+    cursor:             pointer !important
+
+.nopointer,
+.nopointer *
+    pointer-events:     none
+//sass-lint:enable force-element-nesting
 
 .content
-    bottom: 0
-    left: $sidebar-width
-    position: absolute
-    right: 0
-    top: 110px
+    bottom:             0
+    left:               $sidebar-width
+    position:           absolute
+    right:              0
+    top:                110px
+
+.circle
+    border-radius:      50%

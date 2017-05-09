@@ -1,10 +1,16 @@
 .button
-    background: $main-font-color
-    box-shadow: $shadow
-    color: $white
-    cursor: pointer
-    font: inherit
-    padding: 10px 15px
+    background:         $main-font-color
+    color:              $white
+    cursor:             pointer
+    font:               inherit
+    padding:            10px 15px
+
+    &:not(.noshadow)
+        box-shadow:     $shadow
+
+    &:not(.noround)
+        border-radius:  7px
 
     &:active
-        box-shadow: inset $shadow
+        &:not(.noshadow)
+            box-shadow: inset $shadow
