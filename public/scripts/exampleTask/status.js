@@ -1,5 +1,8 @@
-var socket = io('/exampleTask');
-socket.emit('join', 'status');
+let task = document.querySelector('meta[name=\'task\']').getAttribute('content');
+let module = document.querySelector('meta[name=\'module\']').getAttribute('content');
+
+var socket = io(`/${task}`);
+socket.emit('join', module);
 
 var statuses = new Map();
 statuses.set('start', 'online');
