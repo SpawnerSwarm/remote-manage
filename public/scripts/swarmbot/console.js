@@ -1,5 +1,9 @@
-var socket = io('/swarmbot');
-socket.emit('join', 'console');
+let task = document.querySelector('meta[name=\'task\']').getAttribute('content');
+let module = document.querySelector('meta[name=\'module\']').getAttribute('content');
+
+var socket = io(`/${task}`);
+socket.emit('join', module);
+
 socket.on('console', function (data) {
     removeChildren(0);
     parseConsoleJSON(data);
