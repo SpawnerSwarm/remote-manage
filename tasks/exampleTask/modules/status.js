@@ -14,9 +14,14 @@ class Status extends Module {
         ];
         statuses.forEach((status) => {
             socket.on(status, function (status) {
-                this.emit(status);
-            }.bind(socket, status));
+                this.io.of(`/${this.task.namespace}`).in(this.roomName).emit(status);
+            }.bind(this, status));
         });
+    }
+
+    onInit(io, app, task) {
+        this.io = io;
+        this.task = task;
     }
 }
 
