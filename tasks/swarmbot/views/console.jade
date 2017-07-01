@@ -3,9 +3,15 @@ doctype html
 extends ../../../views/layout
 
 block content
-  .console
-  .button-holder
-    span.button-row
+  .console-holder
+    .console
+    span.view-button-row
+      a.button.noselect.clickable.small.view-button(href='console/text')
+        img(src='/images/googleIcons/ic_list_white_24px.svg', alt='T')
+      a.button.noselect.clickable.small.view-button(href='console/json')
+        img(src='/images/googleIcons/ic_code_white_24px.svg', alt='J')
+  .export-button-holder
+    span.export-button-row
       a.button.export-button.noselect.clickable.noround(href=`/${task.namespace}/${module.roomName}/json/download`) Export to JSON
       a.button.export-button.noselect.clickable.noround(href=`/${task.namespace}/${module.roomName}/text/download`) Export to Text
   script(src=`/scripts/${task.namespace}\/console.js`)

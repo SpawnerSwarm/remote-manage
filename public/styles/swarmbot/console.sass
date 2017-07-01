@@ -1,20 +1,30 @@
 @import '../vars'
+$console-margin:        100px
 
 .filterbox
     padding-top:        5px
     position:           absolute
     right:              5px
 
-.console
-    $console-margin:    100px
-    background-color:   $white-highlight-light
+.console-holder
     bottom:             $console-margin
     left:               $console-margin
-    overflow:           auto
-    padding:            5px
     position:           absolute
     right:              $console-margin
     top:                $console-margin / 2
+
+    &:hover .view-button
+        opacity:        100
+
+.console
+    background-color:   $white-highlight-light
+    bottom: 0
+    left: 0
+    overflow:           auto
+    padding:            5px
+    position:           absolute
+    right: 0
+    top: 0
 
     &.filter-errors
         .console-info,
@@ -58,13 +68,30 @@
 .console-info-level
     color:              $success-font-color
 
-.button-holder
+.export-button-holder
     margin-left:        -$sidebar-width
     text-align:         center
 
-.button-row
+.export-button-row
     bottom:             35px
     position:           absolute
+
+.view-button-row
+    position:           absolute
+    right:              30px
+    top:                10px
+
+$button-spacing:        10px
+
+.view-button
+    opacity:            0
+    transition:         opacity .25s
+
+    &:first-child
+        margin-right:   $button-spacing / 2
+
+    &:last-child
+        margin-left:    $button-spacing / 2
 
 $button-spacing:        40px
 
